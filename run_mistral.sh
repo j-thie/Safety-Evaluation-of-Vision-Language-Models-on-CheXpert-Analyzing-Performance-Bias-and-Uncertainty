@@ -28,12 +28,12 @@ subprocess.run(["nvidia-smi", "-L"])
 PY
 
 # Paths
-REPO_DIR=/pfs/data6/home/ul/ul_student/ul_sau95/MIRP_Benchmark
-OUTPUT_DIR=/home/ul/ul_student/ul_sau95/results/mistral
+REPO_DIR=/pathway/to/main/script
+OUTPUT_DIR=/pathway/to/where/results/should/be/saved
 
 cd "$REPO_DIR/2_inference_code"
 
-python onepicthreetimes.py \
+python ministral_main.py \
     --input_folder "$REPO_DIR" \
     --output_folder "$OUTPUT_DIR" \
     --batch_size 1
