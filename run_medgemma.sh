@@ -23,14 +23,14 @@ subprocess.run(["nvidia-smi", "-L"])
 PY
 
 # Paths
-REPO_DIR=/home/ul/ul_student/ul_sau95/medgemma
-OUTPUT_DIR=/home/ul/ul_student/ul_sau95/results/medgemma
+REPO_DIR=/pathway/to/main/script
+OUTPUT_DIR=/pathway/to/where/results/should/be/saved
 
 cd "$REPO_DIR"
 
 export VLLM_DISABLE_COMPILE_CACHE=1
 
-python onepicthreetimesmedge.py \
+python medgemma_main.py \
     --input_folder "$REPO_DIR" \
     --output_folder "$OUTPUT_DIR" \
     --batch_size 1
