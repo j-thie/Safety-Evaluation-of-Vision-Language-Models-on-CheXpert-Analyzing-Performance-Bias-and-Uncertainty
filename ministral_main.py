@@ -71,7 +71,7 @@ def main():
     total_forward_passes = 0
     missing_images = 0
 
-    json_path = "/home/ul/ul_student/ul_sau95/CheXpert/json_files/chexpert_qa_long.json"
+    json_path = "/path/to/json/file/chexpert_qa_long.json"
     print(f"[INFO] Loading JSON: {json_path}")
 
     with open(json_path) as f:
@@ -186,7 +186,7 @@ def main():
 
     # save the results 
 
-    output_dir = "/home/ul/ul_student/ul_sau95/results/ministral"
+    output_dir = "/where/to/save/results"
     os.makedirs(output_dir, exist_ok=True)
 
     out_path = os.path.join(output_dir, f"Ministral_{PROMPT_NAME}.json")
