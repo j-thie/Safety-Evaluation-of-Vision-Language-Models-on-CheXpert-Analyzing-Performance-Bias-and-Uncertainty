@@ -1,4 +1,4 @@
-# Evaluating-Bias-Detection-Tools-on-Medical-Imaging-Datasets
+
 # Chest X-Ray Vision-Language Model Evaluation Framework
 
 ## Overview
