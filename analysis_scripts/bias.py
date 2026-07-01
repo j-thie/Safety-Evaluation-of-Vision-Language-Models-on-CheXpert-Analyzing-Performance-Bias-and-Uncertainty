@@ -178,3 +178,6 @@ print(category_pivot[["accuracy_gap", "fpr_gap", "fnr_gap"]])
 
 
 print("\nAnalysis Complete.")
+metrics.to_csv("bias_model_by_sex.csv", index=False)
+prompt_metrics.to_csv("bias_prompt_by_sex.csv", index=False)
+category_metrics.to_csv("bias_category_by_sex.csv", index=False)
