@@ -150,7 +150,9 @@ def scenario_metrics(
         for path in prompt_paths
     ]
 
-    keys = prompt_results[0].keys()
+    keys = set.intersection(
+    *(set(prompt_result.keys()) for prompt_result in prompt_results)
+)
 
     entropies = []
     invalid_rates = []
