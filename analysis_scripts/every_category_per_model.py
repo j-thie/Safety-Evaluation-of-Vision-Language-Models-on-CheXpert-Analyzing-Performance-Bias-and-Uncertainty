@@ -1,6 +1,7 @@
 import json
 import random
 import numpy as np
+import re
 import csv
 from pathlib import Path
 from collections import defaultdict
@@ -17,6 +18,7 @@ SEED = 42
 
 random.seed(SEED)
 np.random.seed(SEED)
+zero_division=0
 
 # category groups
 
@@ -108,9 +110,16 @@ def bootstrap_metrics(ps, avg_type="binary"):
 # parse file name 
 
 def parse_name(filepath):
-
     stem = Path(filepath).stem
-    model, _, prompt = stem.split("_")
+
+    model = (
+        "MedGemma"
+        if stem.lower().startswith(("mg_", "medgemma"))
+        else "Ministral"
+    )
+
+    match = re.search(r"prompt_?([a-f])", stem, re.IGNORECASE)
+    prompt = f"prompt_{match.group(1).lower()}" if match else "unknown"
 
     return model, prompt
 
