@@ -1,4 +1,10 @@
 # Safety Evaluation of Vision-Language Models on CheXpert: Analyzing Performance, Bias, and Uncertainty
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![Models](https://img.shields.io/badge/Models-MedGemma%20%7C%20Ministral-green)
+![Dataset](https://img.shields.io/badge/Dataset-CheXpert-yellow)
+![GPU Required](https://img.shields.io/badge/GPU-Required-red)
+![Tested on bwHPC](https://img.shields.io/badge/Tested%20on-bwHPC-blueviolet)
+![Research Use](https://img.shields.io/badge/Use-Research%20Only-orange)
 
 Research code for evaluating MedGemma and Ministral on chest X-ray classification under controlled image-availability and prompting conditions.
 
