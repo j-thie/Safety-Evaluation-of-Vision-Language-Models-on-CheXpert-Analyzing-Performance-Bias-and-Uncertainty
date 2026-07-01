@@ -1,15 +1,15 @@
 # Safety Evaluation of Vision-Language Models on CheXpert: Analyzing Performance, Bias, and Uncertainty
 
-Official research code for evaluating MedGemma and Ministral/Mistral on chest X-ray classification under controlled image-availability and prompting conditions.
+Research code for evaluating MedGemma and Ministral on chest X-ray classification under controlled image-availability and prompting conditions.
 
-> **Research use only:** This repository is intended for model evaluation and reproducibility research. It is not a medical device or clinical decision-support system.
+> **Research use only:** This repository is intended for model-evaluation and reproducibility research. It is not a medical device or clinical decision-support system.
 
 ## What this repository evaluates
 
 - Disease and projection classification
-- Normal, no-image, and irrelevant-image conditions
-- Binary and three-choice response formats
-- Prompt sensitivity across prompt variants A-F
+- Original-image, no-image, and irrelevant-image conditions
+- Binary (`0`/`1`) and three-choice (`0`/`1`/`2`) responses
+- Prompt sensitivity across variants A-F
 - Invalid-response behavior
 - Prediction consistency and entropy-based uncertainty
 - Demographic subgroup performance differences
@@ -19,31 +19,33 @@ Official research code for evaluating MedGemma and Ministral/Mistral on chest X-
 | Guide | Purpose |
 |---|---|
 | [Getting started](docs/GETTING_STARTED.md) | Clone-to-first-run instructions |
-| [Configuration](docs/CONFIGURATION.md) | Exact variables and locations that must be edited |
-| [Inference scripts](docs/INFERENCE.md) | Model/condition command matrix and output names |
-| [Prompt conditions](docs/PROMPTS.md) | Prompt families, labels, and variant handling |
+| [Configuration](docs/CONFIGURATION.md) | Exact variables and line locations to edit |
+| [Inference scripts](docs/INFERENCE.md) | Model/condition commands and output names |
+| [Ministral audit](docs/MINISTRAL_AUDIT.md) | Exact Ministral runtime settings and code audit |
+| [Prompt conditions](docs/PROMPTS.md) | Prompt families, labels, and variants |
 | [Reproducing results](docs/REPRODUCING_RESULTS.md) | Required execution order for paper results |
-| [Release checks](docs/RELEASE_CHECKS.md) | Code issues that must be resolved before publication |
+| [Release checks](docs/RELEASE_CHECKS.md) | Issues to resolve before publication |
 
 ## Repository layout
 
 ```text
 .
 ├── MG_*.py                         # MedGemma inference scripts
-├── mis_*.py                        # Ministral/Mistral equivalents
-├── run_medgemma.sh                 # MedGemma SLURM launcher
-├── run_mistral.sh                  # Ministral/Mistral SLURM launcher
+├── mis_*.py                        # Ministral inference scripts
+├── run_medgemma.sh                 # Original MedGemma SLURM launcher
+├── run_mistral.sh                  # Original Ministral SLURM launcher
 ├── MED_environment.yaml            # Python 3.10 Conda base environment
-├── MG_requirements.txt             # Pinned MedGemma environment
-├── MIS_requirements.txt            # Pinned Ministral/Mistral environment
-├── prompt_conditions.pdf           # Full prompt specification
+├── MG_requirements.txt             # Pinned MedGemma packages
+├── MIS_requirements.txt            # Pinned Ministral packages
+├── prompt_conditions.pdf           # Complete prompt specification
 ├── docs/                            # Detailed setup and reproduction guides
+├── scripts/                         # Corrected launcher templates
 └── outputs/                         # Generated predictions and analyses
 ```
 
 ## Getting started
 
-All commands are run from the repository root.
+All commands below are run from the repository root.
 
 ### 1. Clone the repository
 
@@ -61,9 +63,7 @@ python -m pip install --upgrade pip
 python -m pip install -r MG_requirements.txt
 ```
 
-The supplied Conda file defines Python `3.10`; the requirements file pins the Python packages used in the exported environment.
-
-### 3. Create the Ministral/Mistral environment
+### 3. Create the Ministral environment
 
 ```bash
 conda create -n ministral_paper -c conda-forge python=3.10 libstdcxx-ng pip
@@ -72,38 +72,55 @@ python -m pip install --upgrade pip
 python -m pip install -r MIS_requirements.txt
 ```
 
-Before release, replace the non-portable local `packaging @ file:///...` entry in `MIS_requirements.txt` with a normal pinned package version.
+Before release, replace the machine-specific `packaging @ file:///...` entry in `MIS_requirements.txt` with a normal pinned package version.
 
-### 4. Obtain the data
+### 4. Obtain CheXpert
 
-Download CheXpert from the official Stanford AIMI dataset page and comply with its access and citation terms:
+Request CheXpert through the official Stanford AIMI dataset page and follow its access and citation terms:
 
 <https://aimi.stanford.edu/datasets/chexpert-chest-x-rays>
 
-The scripts expect a JSON list whose records include an `image_path`, patient metadata, and pathology-specific question lists. See [Getting started](docs/GETTING_STARTED.md#3-place-the-data).
+The scripts expect a JSON list containing image paths, patient metadata, and pathology-specific question lists. See [Getting started](docs/GETTING_STARTED.md#3-place-the-data).
 
-### 5. Configure the scripts
+### 5. Configure paths
 
-The current scripts do not accept command-line path arguments. Edit these variables directly before running:
+The current scripts use values embedded in the Python source.
+
+MedGemma:
 
 ```python
 PROMPT_NAME = "prompt_a"
 json_path = "/absolute/path/to/chexpert_qa_long.json"
-model_dir = "/absolute/path/to/model"
+model_dir = "/absolute/path/to/medgemma"
 output_dir = "/absolute/path/to/output"
 ```
 
-The irrelevant-image condition also requires:
+Ministral:
+
+```python
+PROMPT_NAME = "prompt_a"
+json_path = "/absolute/path/to/chexpert_qa_long.json"
+output_dir = "/absolute/path/to/output"
+```
+
+The Ministral checkpoint is currently hard-coded as:
+
+```python
+model = "mistralai/Ministral-3-14B-Instruct-2512"
+tokenizer = "mistralai/Ministral-3-14B-Instruct-2512"
+```
+
+Irrelevant-image scripts additionally require:
 
 ```python
 imagenet_root = Path("/absolute/path/to/irrelevant/image/dataset")
 ```
 
-Exact files and current line locations are listed in [Configuration](docs/CONFIGURATION.md).
+Exact file and line locations are listed in [Configuration](docs/CONFIGURATION.md).
 
 ### 6. Run inference
 
-MedGemma examples:
+MedGemma:
 
 ```bash
 python MG_normal_2.py
@@ -115,7 +132,7 @@ python MG_known_3.py
 python MG_irrelevant_3.py
 ```
 
-Ministral/Mistral uses the corresponding `mis_*.py` scripts:
+Ministral:
 
 ```bash
 python mis_normal_2.py
@@ -127,44 +144,65 @@ python mis_known_3.py
 python mis_irrelevant_3.py
 ```
 
-Only run filenames that actually exist in the repository. See [Inference scripts](docs/INFERENCE.md) for output names and condition details.
+The naming convention is:
+
+- `normal`: original chest X-ray is supplied;
+- `unknown`: the image is withheld without telling the model;
+- `known`: the image is withheld and the model is explicitly told it is missing;
+- `irrelevant`: an unrelated ImageNet image is supplied;
+- `_2`: binary response (`0` or `1`);
+- `_3`: three-choice response (`0`, `1`, or `2`).
 
 ### 7. Run on SLURM
 
-The uploaded launcher requires correction before use. A corrected template is provided at [`scripts/run_medgemma.example.sh`](scripts/run_medgemma.example.sh).
-
-Example:
+Corrected launcher templates are included:
 
 ```bash
 sbatch \
   --export=ALL,REPO_DIR="$PWD",SCRIPT="MG_normal_2.py" \
   scripts/run_medgemma.example.sh
+
+sbatch \
+  --export=ALL,REPO_DIR="$PWD",SCRIPT="mis_normal_2.py" \
+  scripts/run_mistral.example.sh
 ```
 
-The Python scripts still control their own dataset, model, and output paths, so configure those first.
+The Python scripts still control their dataset, model, prompt, irrelevant-image, and output settings, so configure them before submitting.
 
-## Model settings currently encoded in MedGemma scripts
+## Inference settings
 
-- Model class: `AutoModelForImageTextToText`
-- Processor: `AutoProcessor`
-- Precision: `torch.bfloat16`
-- Device placement: `device_map="auto"`
-- Sampling: disabled with `do_sample=False`
-- Maximum generated tokens: `32` in the uploaded image-input scripts
-- Output format: JSON grouped by patient and image
+### MedGemma
+
+- `AutoModelForImageTextToText`
+- `AutoProcessor`
+- `torch.bfloat16`
+- `device_map="auto"`
+- `do_sample=False`
+- normally `max_new_tokens=32`
+
+### Ministral
+
+- Model: `mistralai/Ministral-3-14B-Instruct-2512`
+- Runtime: vLLM
+- `tokenizer_mode="mistral"`
+- `gpu_memory_utilization=0.95`
+- `max_model_len=32000`
+- `max_tokens=32`
+- `temperature=0.0`
+- `top_p=1.0`
 
 ## Hardware
 
-The supplied MedGemma SLURM file requests:
+Both supplied SLURM launchers request:
 
 | Resource | Requested value |
 |---|---:|
-| GPU | 1 H100-class GPU partition |
+| GPU | 1 GPU on an H100 partition |
 | CPUs | 8 |
 | System memory | 180 GB |
 | Wall time | 1 hour |
 
-This is a **tested/requested cluster configuration, not a measured minimum**. Before publication, record peak VRAM and actual runtime for every model and condition.
+These are requested cluster resources, not measured minimum requirements. Before publication, record actual peak VRAM and runtime for each model and condition.
 
 ## Output labels
 
