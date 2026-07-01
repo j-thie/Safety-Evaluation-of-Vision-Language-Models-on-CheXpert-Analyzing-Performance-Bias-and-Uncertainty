@@ -2,6 +2,7 @@ import json
 import random
 import numpy as np
 import csv
+import re
 from pathlib import Path
 from itertools import combinations
 from collections import defaultdict
@@ -30,6 +31,7 @@ def is_projection(category):
 def is_disease(category):
     return category not in PROJECTION_CATEGORIES
 
+zero_division=0
 
 # core helpers 
 
@@ -103,7 +105,10 @@ def bootstrap_f1(ps, group):
 
 
 def paired_bootstrap_diff(psA, psB, group):
-    ids = list(psA.keys())
+    ids = sorted(set(psA) & set(psB))
+
+    if not ids:
+        raise ValueError("No common patients between paired files")
     diffs = []
     avg = "binary" if group == "disease" else "macro"
 
@@ -135,7 +140,16 @@ def paired_bootstrap_diff(psA, psB, group):
 
 def parse_name(filepath):
     stem = Path(filepath).stem
-    model, _, prompt = stem.split("_")
+
+    model = (
+        "MedGemma"
+        if stem.lower().startswith(("mg_", "medgemma"))
+        else "Ministral"
+    )
+
+    match = re.search(r"prompt_?([a-f])", stem, re.IGNORECASE)
+    prompt = f"prompt_{match.group(1).lower()}" if match else "unknown"
+
     return model, prompt
 
 
