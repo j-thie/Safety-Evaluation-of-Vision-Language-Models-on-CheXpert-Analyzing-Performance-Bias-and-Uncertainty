@@ -1,369 +1,180 @@
+# Safety Evaluation of Vision-Language Models on CheXpert: Analyzing Performance, Bias, and Uncertainty
 
-# Chest X-Ray Vision-Language Model Evaluation Framework
+Official research code for evaluating MedGemma and Ministral/Mistral on chest X-ray classification under controlled image-availability and prompting conditions.
 
-## Overview
+> **Research use only:** This repository is intended for model evaluation and reproducibility research. It is not a medical device or clinical decision-support system.
 
-This repository contains inference and analysis pipelines for evaluating vision-language models (VLMs) on chest X-ray classification tasks under multiple prompting and information-availability conditions.
+## What this repository evaluates
 
-The framework supports controlled experiments designed to measure:
+- Disease and projection classification
+- Normal, no-image, and irrelevant-image conditions
+- Binary and three-choice response formats
+- Prompt sensitivity across prompt variants A-F
+- Invalid-response behavior
+- Prediction consistency and entropy-based uncertainty
+- Demographic subgroup performance differences
 
-* Disease classification performance
-* Projection classification performance
-* Prompt sensitivity
-* Image dependence
-* Invalid-response behavior
-* Prediction consistency
-* Uncertainty across prompts
-* Demographic subgroup performance differences
+## Documentation
 
-The repository includes scripts for generating model predictions, processing outputs, computing evaluation metrics, and performing statistical analyses.
+| Guide | Purpose |
+|---|---|
+| [Getting started](docs/GETTING_STARTED.md) | Clone-to-first-run instructions |
+| [Configuration](docs/CONFIGURATION.md) | Exact variables and locations that must be edited |
+| [Inference scripts](docs/INFERENCE.md) | Model/condition command matrix and output names |
+| [Prompt conditions](docs/PROMPTS.md) | Prompt families, labels, and variant handling |
+| [Reproducing results](docs/REPRODUCING_RESULTS.md) | Required execution order for paper results |
+| [Release checks](docs/RELEASE_CHECKS.md) | Code issues that must be resolved before publication |
 
----
-
-## Features
-
-### Inference Pipelines
-
-Support for multiple vision-language models:
-
-* MedGemma
-* Ministral / Mistral
-
-### Experimental Conditions
-
-The framework evaluates model behavior under several controlled settings:
-
-| Condition                  | Description                                                        |
-| -------------------------- | ------------------------------------------------------------------ |
-| Normal                     | Original chest X-ray provided                                      |
-| No Image (Unknown Allowed) | No image provided; model may respond with insufficient information |
-| No Image (Known Required)  | No image provided; model must still answer                         |
-| Irrelevant Image           | Chest X-ray replaced with an unrelated image                       |
-
-### Evaluation Capabilities
-
-* Accuracy
-* Precision
-* Recall
-* F1 Score
-* Macro F1
-* Per-class F1
-* Specificity
-* False Positive Rate (FPR)
-* False Negative Rate (FNR)
-* Bootstrap confidence intervals
-* Pairwise significance testing
-* Entropy-based uncertainty measures
-* Prediction variability analysis
-* Invalid response analysis
-* Demographic subgroup comparisons
-
----
-
-## Repository Structure
-
-### Inference Scripts
-
-#### MedGemma
+## Repository layout
 
 ```text
-MG_normal_*
-MG_unknown_*
-MG_known_*
-MG_irrelevant_*
+.
+├── MG_*.py                         # MedGemma inference scripts
+├── mis_*.py                        # Ministral/Mistral equivalents
+├── run_medgemma.sh                 # MedGemma SLURM launcher
+├── run_mistral.sh                  # Ministral/Mistral SLURM launcher
+├── MED_environment.yaml            # Python 3.10 Conda base environment
+├── MG_requirements.txt             # Pinned MedGemma environment
+├── MIS_requirements.txt            # Pinned Ministral/Mistral environment
+├── prompt_conditions.pdf           # Full prompt specification
+├── docs/                            # Detailed setup and reproduction guides
+└── outputs/                         # Generated predictions and analyses
 ```
 
-Generate predictions using MedGemma under different prompting conditions.
+## Getting started
 
-#### Ministral / Mistral
+All commands are run from the repository root.
 
-```text
-mis_normal_*
-mis_unknown_*
-mis_known_*
-mis_irrelevant_*
-```
-
-Equivalent inference pipelines for Ministral-based models.
-
----
-
-### Cluster Execution
-
-```text
-run_medgemma.sh
-run_mistral.sh
-```
-
-SLURM job submission scripts for GPU clusters.
-
----
-
-### Performance Evaluation
-
-```text
-calculations.py
-norm3_f1_acc.py
-F1_bootstrapping.py
-every_category_per_model.py
-```
-
-Compute classification metrics and aggregate results across models and prompts.
-
----
-
-### Bias and Demographic Analysis
-
-```text
-bias.py
-invalid_per_gender.py
-```
-
-Evaluate subgroup performance differences and invalid response distributions.
-
----
-
-### Prompt Sensitivity Analysis
-
-```text
-per_category_per_prompt_typebootstrapping.py
-```
-
-Measures how performance changes across prompt formulations.
-
----
-
-### Invalid Response Analysis
-
-```text
-count_invalids_&_2.py
-invlaid_calculations.py
-invlaid_calculations3.py
-```
-
-Quantifies invalid outputs and evaluates their impact on model performance.
-
----
-
-### Projection Analysis
-
-```text
-count_zeros_for_frontal_lateral.py
-everythingforFL.py
-f1&accuracy_of_FL.py
-```
-
-Analysis of frontal/lateral projection classification tasks.
-
----
-
-### Uncertainty and Consistency Analysis
-
-```text
-entropy_calculations_2.py
-entropy_cal_3.py
-SD_Comparision.py
-SD_Comparision_3.py
-```
-
-Measures prediction consistency across prompt variants using entropy and variability metrics.
-
----
-
-## Dataset Format
-
-The framework expects a JSON dataset structured similarly to:
-
-```json
-{
-  "image_path": "/path/to/image.png",
-  "sex": "Female",
-  "patient_id": "patient0001",
-  "study_id": "study001",
-  "view": "frontal",
-
-  "Cardiomegaly": [
-    {
-      "question": "Is cardiomegaly present?",
-      "answer": 1
-    }
-  ]
-}
-```
-
-Each image can contain multiple pathology-specific questions.
-
----
-
-## Prediction Output Format
-
-Inference scripts produce structured prediction files:
-
-```json
-{
-  "patient0001": {
-    "sex": "Female",
-    "images": {
-      "image.png": {
-        "predictions": [
-          {
-            "category": "Cardiomegaly",
-            "question": "Is cardiomegaly present?",
-            "expected_answer": 1,
-            "model_answer": 1
-          }
-        ]
-      }
-    }
-  }
-}
-```
-
-### Output Labels
-
-| Value   | Meaning                            |
-| ------- | ---------------------------------- |
-| 0       | Finding absent                     |
-| 1       | Finding present                    |
-| 2       | Unknown / insufficient information |
-| INVALID | Output could not be parsed         |
-
----
-
-## Installation
-
-### Requirements
-
-```text
-Python 3.10+
-PyTorch
-Transformers
-vLLM
-NumPy
-Pandas
-SciPy
-Scikit-Learn
-Pillow
-```
-
-Install dependencies:
+### 1. Clone the repository
 
 ```bash
-pip install torch transformers vllm numpy pandas scipy scikit-learn pillow
+git clone <FINAL_REPOSITORY_URL>
+cd Safety-Evaluation-of-Vision-Language-Models-on-CheXpert-Analyzing-Performance-Bias-and-Uncertainty
 ```
 
----
+### 2. Create the MedGemma environment
 
-## Configuration
+```bash
+conda env create -f MED_environment.yaml
+conda activate medgemma_paper
+python -m pip install --upgrade pip
+python -m pip install -r MG_requirements.txt
+```
 
-Before running experiments, update paths inside the scripts:
+The supplied Conda file defines Python `3.10`; the requirements file pins the Python packages used in the exported environment.
+
+### 3. Create the Ministral/Mistral environment
+
+```bash
+conda create -n ministral_paper -c conda-forge python=3.10 libstdcxx-ng pip
+conda activate ministral_paper
+python -m pip install --upgrade pip
+python -m pip install -r MIS_requirements.txt
+```
+
+Before release, replace the non-portable local `packaging @ file:///...` entry in `MIS_requirements.txt` with a normal pinned package version.
+
+### 4. Obtain the data
+
+Download CheXpert from the official Stanford AIMI dataset page and comply with its access and citation terms:
+
+<https://aimi.stanford.edu/datasets/chexpert-chest-x-rays>
+
+The scripts expect a JSON list whose records include an `image_path`, patient metadata, and pathology-specific question lists. See [Getting started](docs/GETTING_STARTED.md#3-place-the-data).
+
+### 5. Configure the scripts
+
+The current scripts do not accept command-line path arguments. Edit these variables directly before running:
 
 ```python
-json_path = "/path/to/dataset.json"
-model_dir = "/path/to/model"
-output_dir = "/path/to/output"
+PROMPT_NAME = "prompt_a"
+json_path = "/absolute/path/to/chexpert_qa_long.json"
+model_dir = "/absolute/path/to/model"
+output_dir = "/absolute/path/to/output"
 ```
 
-Several scripts contain placeholder paths that must be replaced with local paths.
+The irrelevant-image condition also requires:
 
----
+```python
+imagenet_root = Path("/absolute/path/to/irrelevant/image/dataset")
+```
 
-## Running Inference
+Exact files and current line locations are listed in [Configuration](docs/CONFIGURATION.md).
 
-### MedGemma
+### 6. Run inference
+
+MedGemma examples:
 
 ```bash
 python MG_normal_2.py
+python MG_normal_3.py
+python MG_unknown_2.py
+python MG_unknown_3.py
+python MG_known_2.py
+python MG_known_3.py
+python MG_irrelevant_3.py
 ```
 
-or submit via SLURM:
-
-```bash
-sbatch run_medgemma.sh
-```
-
-### Ministral
+Ministral/Mistral uses the corresponding `mis_*.py` scripts:
 
 ```bash
 python mis_normal_2.py
+python mis_normal_3.py
+python mis_unknown_2.py
+python mis_unknown_3.py
+python mis_known_2.py
+python mis_known_3.py
+python mis_irrelevant_3.py
 ```
 
-or:
+Only run filenames that actually exist in the repository. See [Inference scripts](docs/INFERENCE.md) for output names and condition details.
+
+### 7. Run on SLURM
+
+The uploaded launcher requires correction before use. A corrected template is provided at [`scripts/run_medgemma.example.sh`](scripts/run_medgemma.example.sh).
+
+Example:
 
 ```bash
-sbatch run_mistral.sh
+sbatch \
+  --export=ALL,REPO_DIR="$PWD",SCRIPT="MG_normal_2.py" \
+  scripts/run_medgemma.example.sh
 ```
 
----
+The Python scripts still control their own dataset, model, and output paths, so configure those first.
 
-## Running Analysis
+## Model settings currently encoded in MedGemma scripts
 
-### Category-Level Metrics
+- Model class: `AutoModelForImageTextToText`
+- Processor: `AutoProcessor`
+- Precision: `torch.bfloat16`
+- Device placement: `device_map="auto"`
+- Sampling: disabled with `do_sample=False`
+- Maximum generated tokens: `32` in the uploaded image-input scripts
+- Output format: JSON grouped by patient and image
 
-```bash
-python calculations.py
-```
+## Hardware
 
-### Bootstrap Evaluation
+The supplied MedGemma SLURM file requests:
 
-```bash
-python F1_bootstrapping.py
-```
+| Resource | Requested value |
+|---|---:|
+| GPU | 1 H100-class GPU partition |
+| CPUs | 8 |
+| System memory | 180 GB |
+| Wall time | 1 hour |
 
-### Gender-Based Analysis
+This is a **tested/requested cluster configuration, not a measured minimum**. Before publication, record peak VRAM and actual runtime for every model and condition.
 
-```bash
-python bias.py
-```
+## Output labels
 
-### Invalid Response Analysis
+| Value | Meaning |
+|---|---|
+| `0` | Finding absent |
+| `1` | Finding present |
+| `2` | Insufficient information |
+| `INVALID` | Output could not be parsed |
 
-```bash
-python invalid_per_gender.py
-```
+## Citation and license
 
-### Entropy and Uncertainty Analysis
-
-```bash
-python entropy_calculations_2.py
-python entropy_cal_3.py
-```
-
----
-
-## Evaluation Methodology
-
-### Invalid Predictions
-
-Many evaluation scripts treat invalid outputs as guaranteed incorrect predictions.
-
-For example:
-
-```text
-INVALID
-```
-
-is converted into an incorrect prediction before metric computation.
-
-This prevents malformed outputs from being ignored during evaluation.
-
-### Bootstrap Confidence Intervals
-
-Several analyses use:
-
-```python
-N_BOOT = 10000
-SEED = 42
-```
-
-to estimate confidence intervals and statistical significance.
-
----
-
-## Limitations
-
-* Paths must be manually configured before execution.
-* The repository assumes a specific dataset structure.
-* GPU resources are required for large-scale inference.
-
-
+Add the final paper citation, repository license, and model/dataset license notices before release.
