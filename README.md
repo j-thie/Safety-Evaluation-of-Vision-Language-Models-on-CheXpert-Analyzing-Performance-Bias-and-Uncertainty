@@ -64,7 +64,7 @@ cd Safety-Evaluation-of-Vision-Language-Models-on-CheXpert-Analyzing-Performance
 
 ```bash
 conda env create -f MED_environment.yaml
-conda activate medgemma_paper
+conda activate medgemma
 python -m pip install --upgrade pip
 python -m pip install -r MG_requirements.txt
 ```
@@ -73,12 +73,12 @@ python -m pip install -r MG_requirements.txt
 
 ```bash
 conda create -n ministral_paper -c conda-forge python=3.10 libstdcxx-ng pip
-conda activate ministral_paper
+conda activate ministral
 python -m pip install --upgrade pip
 python -m pip install -r MIS_requirements.txt
 ```
 
-Before release, replace the machine-specific `packaging @ file:///...` entry in `MIS_requirements.txt` with a normal pinned package version.
+
 
 ### 4. Obtain CheXpert
 
