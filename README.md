@@ -44,9 +44,9 @@ Research code for evaluating MedGemma and Ministral on chest X-ray classificatio
 ├── MG_requirements.txt             # Pinned MedGemma packages
 ├── MIS_requirements.txt            # Pinned Ministral packages
 ├── prompt_conditions.pdf           # Complete prompt specification
-├── docs/                            # Detailed setup and reproduction guides
-├── scripts/                         # Corrected launcher templates
-└── outputs/                         # Generated predictions and analyses
+├── docs/                           # Detailed setup and reproduction guides
+├── scripts/                        # Corrected launcher templates
+└── outputs/                        # Generated predictions and analyses
 ```
 
 ## Getting started
@@ -184,7 +184,7 @@ The Python scripts still control their dataset, model, prompt, irrelevant-image,
 - `torch.bfloat16`
 - `device_map="auto"`
 - `do_sample=False`
-- normally `max_new_tokens=32`
+- `max_new_tokens=32`
 
 ### Ministral
 
@@ -208,7 +208,7 @@ Both supplied SLURM launchers request:
 | System memory | 180 GB |
 | Wall time | 1 hour |
 
-These are requested cluster resources, not measured minimum requirements. Before publication, record actual peak VRAM and runtime for each model and condition.
+
 
 ## Output labels
 
@@ -221,4 +221,4 @@ These are requested cluster resources, not measured minimum requirements. Before
 
 ## Citation and license
 
-Add the final paper citation, repository license, and model/dataset license notices before release.
+The authors acknowledge support by the state of Baden-Württemberg through bwHPC.
