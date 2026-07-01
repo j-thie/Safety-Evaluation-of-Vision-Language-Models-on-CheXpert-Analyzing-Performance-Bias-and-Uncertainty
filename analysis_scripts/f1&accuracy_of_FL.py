@@ -128,7 +128,7 @@ all_rows.extend(process_files(MISTRAL_FILES, "Mistral"))
 
 
 # write main CSV
-output_file = "frontal_lateral_analysis.csv"
+output_file = "frontal_lateral_records_with_view_type.csv"
 
 with open(output_file, "w", newline="") as csvfile:
     fieldnames = [
