@@ -3,7 +3,7 @@ import json
 import pandas as pd
 import numpy as np
 from sklearn.metrics import accuracy_score, f1_score
-
+import io
 
 pathways = {
     "MedGemma" : [
@@ -131,15 +131,9 @@ if all_results:
 else:
     print("Execution failed. Please confirm your local absolute JSON paths are accurate.")
 
-import pandas as pd
-import io
 
-# Load the raw string data you provided
-raw_data = """ add data here """
 
-# If using a generated file from before, uncomment line below:
-# df = pd.read_csv('thesis_evaluation_results.csv')
-df = pd.read_csv(io.StringIO(raw_data)) # Placeholder for your input block
+df = pd.read_csv("norm3_f1_acc.csv")
 
 # Group by Model and Category, then calculate Mean and Standard Deviation across all prompts
 grouped = df.groupby(['Model', 'Category']).agg({
