@@ -13,6 +13,8 @@ MIS_FILES = [
 ]
 
 # --------------------------------------------------------------
+SEED = 42
+rng = np.random.default_rng(SEED)
 
 def extract_accuracy_by_category(json_path):
 
@@ -98,23 +100,18 @@ def bootstrap_diff_ci(data1, data2, n_boot=10000):
 print("\nPooling data by category...")
 
 MED = pool_by_category(MED_FILES)
-MIS_MED = pool_by_category(MIS_FILES)
+MIS = pool_by_category(MIS_FILES)
 
-print("\nBootstrapping per category...")
-
-results = []
-
-for category in MED.keys():
-
-    if category not in NONMED:
+for category in MED:
+    if category not in MIS:
         continue
 
-    med_vals = np.array(MED[category])
-    nonmed_vals = np.array(NONMED[category])
+    med_vals = np.asarray(MED[category])
+    mis_vals = np.asarray(MIS[category])
 
     ci_med = bootstrap_ci(med_vals)
-    ci_nonmed = bootstrap_ci(nonmed_vals)
-    ci_diff = bootstrap_diff_ci(med_vals, nonmed_vals)
+    ci_mis = bootstrap_ci(mis_vals)
+    ci_diff = bootstrap_diff_ci(med_vals, mis_vals)
 
     results.append([
         category,
@@ -122,11 +119,11 @@ for category in MED.keys():
         np.mean(med_vals),
         ci_med[0],
         ci_med[1],
-        len(nonmed_vals),
-        np.mean(nonmed_vals),
-        ci_nonmed[0],
-        ci_nonmed[1],
-        np.mean(med_vals) - np.mean(nonmed_vals),
+        len(Ministral_vals),
+        np.mean(Ministral_vals),
+        ci_Ministral[0],
+        ci_Ministral[1],
+        np.mean(med_vals) - np.mean(Ministral_vals),
         ci_diff[0],
         ci_diff[1]
     ])
@@ -144,11 +141,11 @@ with open("per_category_bootstrap_results.csv", "w", newline="") as f:
         "Med_Mean",
         "Med_CI_Lower",
         "Med_CI_Upper",
-        "NonMed_N",
-        "NonMed_Mean",
-        "NonMed_CI_Lower",
-        "NonMed_CI_Upper",
-        "Diff_Med-NonMed",
+        "Ministral_N",
+        "Ministral_Mean",
+        "Ministral_CI_Lower",
+        "Ministral_CI_Upper",
+        "Diff_Med-Ministral",
         "Diff_CI_Lower",
         "Diff_CI_Upper"
     ])
