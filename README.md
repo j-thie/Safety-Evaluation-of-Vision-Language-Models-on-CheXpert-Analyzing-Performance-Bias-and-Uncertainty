@@ -56,7 +56,7 @@ All commands below are run from the repository root.
 ### 1. Clone the repository
 
 ```bash
-git clone <FINAL_REPOSITORY_URL>
+git clone (https://github.com/j-thie/Safety-Evaluation-of-Vision-Language-Models-on-CheXpert-Analyzing-Performance-Bias-and-Uncertainty.git)
 cd Safety-Evaluation-of-Vision-Language-Models-on-CheXpert-Analyzing-Performance-Bias-and-Uncertainty
 ```
 
@@ -90,7 +90,6 @@ The scripts expect a JSON list containing image paths, patient metadata, and pat
 
 ### 5. Configure paths
 
-The current scripts use values embedded in the Python source.
 
 MedGemma:
 
@@ -166,11 +165,11 @@ Corrected launcher templates are included:
 ```bash
 sbatch \
   --export=ALL,REPO_DIR="$PWD",SCRIPT="MG_normal_2.py" \
-  scripts/run_medgemma.example.sh
+  scripts/run_medgemma.sh
 
 sbatch \
   --export=ALL,REPO_DIR="$PWD",SCRIPT="mis_normal_2.py" \
-  scripts/run_mistral.example.sh
+  scripts/run_mistral.sh
 ```
 
 The Python scripts still control their dataset, model, prompt, irrelevant-image, and output settings, so configure them before submitting.
