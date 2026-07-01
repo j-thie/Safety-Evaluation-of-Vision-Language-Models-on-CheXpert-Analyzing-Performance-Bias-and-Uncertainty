@@ -1,0 +1,7 @@
+name: nopic_mistral
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - libstdcxx-ng
+prefix: /home/ul/ul_student/ul_sau95/.conda/envs/nopic_mistral

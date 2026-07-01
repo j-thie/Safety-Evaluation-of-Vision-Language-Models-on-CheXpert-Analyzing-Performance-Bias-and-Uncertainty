@@ -1,0 +1,7 @@
+name: medgemma_paper
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - libstdcxx-ng
+prefix: /home/ul/ul_student/ul_sau95/.conda/envs/medgemma_paper
