@@ -107,7 +107,9 @@ def scenario_uncertainty(prompt_paths):
     ]
 
     # all keys (cases)
-    keys = prompt_results[0].keys()
+    keys = set.intersection(
+        *(set(prompt_result.keys()) for prompt_result in prompt_results)
+    )
 
     entropies = []
 
