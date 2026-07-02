@@ -124,30 +124,37 @@ imagenet_root = Path("/absolute/path/to/irrelevant/image/dataset")
 Exact file and line locations are listed in [Configuration](docs/CONFIGURATION.md).
 
 ### 6. Run inference
+<table>
+  <thead>
+    <tr>
+      <th>MedGemma</th>
+      <th>Ministral</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>python MG_normal_2.py</code><br>
+        <code>python MG_normal_3.py</code><br>
+        <code>python MG_unknown_2.py</code><br>
+        <code>python MG_unknown_3.py</code><br>
+        <code>python MG_known_2.py</code><br>
+        <code>python MG_known_3.py</code><br>
+        <code>python MG_irrelevant_3.py</code>
+      </td>
+      <td>
+        <code>python mis_normal_2.py</code><br>
+        <code>python mis_normal_3.py</code><br>
+        <code>python mis_unknown_2.py</code><br>
+        <code>python mis_unknown_3.py</code><br>
+        <code>python mis_known_2.py</code><br>
+        <code>python mis_known_3.py</code><br>
+        <code>python mis_irrelevant_3.py</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-MedGemma:
-
-```bash
-python MG_normal_2.py
-python MG_normal_3.py
-python MG_unknown_2.py
-python MG_unknown_3.py
-python MG_known_2.py
-python MG_known_3.py
-python MG_irrelevant_3.py
-```
-
-Ministral:
-
-```bash
-python mis_normal_2.py
-python mis_normal_3.py
-python mis_unknown_2.py
-python mis_unknown_3.py
-python mis_known_2.py
-python mis_known_3.py
-python mis_irrelevant_3.py
-```
 
 The naming convention is:
 
@@ -176,25 +183,11 @@ The Python scripts still control their dataset, model, prompt, irrelevant-image,
 
 ## Inference settings
 
-### MedGemma
 
-- `AutoModelForImageTextToText`
-- `AutoProcessor`
-- `torch.bfloat16`
-- `device_map="auto"`
-- `do_sample=False`
-- `max_new_tokens=32`
+| MedGemma                                                                                                                                | Ministral                                                                                                                                                                                                          |
+| --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `AutoModelForImageTextToText`<br>`AutoProcessor`<br>`torch.bfloat16`<br>`device_map="auto"`<br>`do_sample=False`<br>`max_new_tokens=32` | Model: `mistralai/Ministral-3-14B-Instruct-2512`<br>Runtime: `vLLM`<br>`tokenizer_mode="mistral"`<br>`gpu_memory_utilization=0.95`<br>`max_model_len=32000`<br>`max_tokens=32`<br>`temperature=0.0`<br>`top_p=1.0` |
 
-### Ministral
-
-- Model: `mistralai/Ministral-3-14B-Instruct-2512`
-- Runtime: vLLM
-- `tokenizer_mode="mistral"`
-- `gpu_memory_utilization=0.95`
-- `max_model_len=32000`
-- `max_tokens=32`
-- `temperature=0.0`
-- `top_p=1.0`
 
 ## Hardware
 
