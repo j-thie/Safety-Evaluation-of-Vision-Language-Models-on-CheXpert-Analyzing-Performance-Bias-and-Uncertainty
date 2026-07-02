@@ -27,7 +27,6 @@ Research code for evaluating MedGemma and Ministral on chest X-ray classificatio
 | [Getting started](docs/GETTING_STARTED.md) | Clone-to-first-run instructions |
 | [Configuration](docs/CONFIGURATION.md) | Exact variables and line locations to edit |
 | [Inference scripts](docs/INFERENCE.md) | Model/condition commands and output names |
-| [Ministral audit](docs/MINISTRAL_AUDIT.md) | Exact Ministral runtime settings and code audit |
 | [Prompt conditions](docs/PROMPTS.md) | Prompt families, labels, and variants |
 | [Reproducing results](docs/REPRODUCING_RESULTS.md) | Required execution order for paper results |
 | [Release checks](docs/RELEASE_CHECKS.md) | Issues to resolve before publication |
