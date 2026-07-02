@@ -1,0 +1,84 @@
+# Release Checks
+
+Resolve or explicitly document these items before claiming exact reproduction.
+
+## Shared inference issues
+
+- [ ] `PROMPT_NAME` changes only the output filename and does not select the prompt.
+- [ ] Prompt text and parser label set are consistent in every script.
+- [ ] Binary parsers use a standalone-label regular expression instead of checking whether `"1"` or `"0"` occurs anywhere.
+- [ ] The exact model/checkpoint revision is recorded.
+- [ ] Peak VRAM and actual runtime are measured for every model and condition.
+- [ ] Output naming is standardized; current scripts inconsistently include an underscore before `PROMPT_NAME`.
+
+## MedGemma issues
+
+- [ ] `MG_unknown_2.py` is verified to omit the image as intended.
+- [ ] Binary prompt/parser mismatches are corrected.
+- [ ] No-image scripts use a consistent generation-token limit.
+- [ ] The original MedGemma launcher is replaced or corrected.
+
+## Ministral issues
+
+- [ ] No-image scripts stop loading/base64-encoding images that are never passed to the model.
+- [ ] `mis_known_2.py` and `mis_known_3.py` replace literal `\\n` sequences with actual newlines if that was not intentional.
+- [ ] The typo `The should be an image is a chest X-ray` is corrected in the known-condition prompts.
+- [ ] The four no-image scripts preserve source identifiers without requiring the image file to exist.
+- [ ] The original Ministral launcher is replaced or corrected.
+- [ ] The `mistral-env`/`ministral_paper` environment name is standardized.
+- [ ] The non-portable `packaging @ file:///...` requirement is replaced.
+- [ ] Confirm whether `max_model_len=32000` is required and report its memory impact.
+
+## Irrelevant-image issues
+
+- [ ] Set and record a random seed.
+- [ ] Preserve the source CheXpert patient/image identifiers.
+- [ ] Store the selected irrelevant-image mapping.
+- [ ] Avoid grouping results under identifiers derived from ImageNet paths.
+- [ ] Document the irrelevant-image dataset and its license.
+
+## SLURM issues
+
+- [ ] Replace placeholder `/add/wanted/script.py`.
+- [ ] Remove unsupported `--input_folder`, `--output_folder`, and `--batch_size` arguments.
+- [ ] Ensure the environment name matches the committed setup instructions.
+- [ ] Confirm that the one-hour wall time is sufficient for a full run.
+- [ ] Add safe log output/error paths.
+
+## Documentation still needed
+
+- [ ] CheXpert version, split, filtering, and sample counts
+- [ ] Dataset-preparation script and command
+- [ ] Analysis-script inputs and commands
+- [ ] Figure-generation scripts and filenames
+- [ ] Expected paper results and tolerances
+- [ ] Paper citation
+- [ ] Repository license
+- [ ] Dataset and model license notices
+
+## Final clean-clone test
+
+- [ ] Install both environments from committed files.
+- [ ] Run one MedGemma smoke test.
+- [ ] Run one Ministral smoke test.
+- [ ] Run every documented condition.
+- [ ] Generate all paper tables and figures.
+- [ ] Confirm no private paths, credentials, patient data, or restricted assets are committed.
+
+
+## Analysis blockers
+
+- [ ] `per_category_per_prompt_typebootstrapping.py`: replace undefined `NONMED`/`nonmed_vals` references with the Ministral dataset variable.
+- [ ] `norm3_f1_acc.py`: remove the placeholder `raw_data` block or read `norm3_f1_acc.csv`.
+- [ ] `F1_bootstrapping.py`: pair only common patient IDs and replace the fragile filename parser.
+- [ ] `every_category_per_model.py`: replace the fragile filename parser.
+- [ ] Entropy and SD scripts: compare the intersection of keys across all prompt files.
+- [ ] Entropy and SD scripts: key predictions by patient, image, category, and question rather than question index.
+- [ ] `entropy_cal_3.py`: remove the duplicated analysis loop and verify the number of classes.
+- [ ] `invlaid_calculations*.py`: decide whether the metric concerns parser `INVALID` or all incorrect cases and rename it accurately.
+- [ ] `invlaid_calculations*.py`: prevent category-key collisions by including the question.
+- [ ] `bias.py`: set `DATA_FOLDER` to a directory, handle missing sex groups, and save tables to CSV.
+- [ ] `everythingforFL.py` and `f1&accuracy_of_FL.py`: prevent both scripts from overwriting `frontal_lateral_analysis.csv`.
+- [ ] Projection scripts: verify that the image dictionary key is a view label rather than an image filename.
+- [ ] Add pinned `pandas`, `scipy`, and `scikit-learn` versions for the analysis environment.
+- [ ] Rename misspelled and shell-sensitive analysis filenames and update all documentation references.
