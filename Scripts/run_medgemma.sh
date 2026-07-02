@@ -12,6 +12,18 @@
 source ~/.bashrc
 conda activate medgemma
 
+export VLLM_DISABLE_COMPILE_CACHE=1
+
+conda activate "$CONDA_ENV"
+cd "$REPO_DIR"
+mkdir -p logs
+
+
+
+python "$script".py \
+    --input_folder "$REPO_DIR" \
+    --batch_size 1
+
 # Debug info
 python - <<'PY'
 import torch, subprocess
@@ -21,16 +33,3 @@ if torch.cuda.is_available():
     print("CUDA runtime:", torch.version.cuda)
 subprocess.run(["nvidia-smi", "-L"])
 PY
-
-# Paths
-REPO_DIR=/home/ul/ul_student/ul_sau95/medgemma
-OUTPUT_DIR=/home/ul/ul_student/ul_sau95/results/medgemma
-
-cd "$REPO_DIR"
-
-export VLLM_DISABLE_COMPILE_CACHE=1
-
-python onepicthreetimesmedge.py \
-    --input_folder "$REPO_DIR" \
-    --output_folder "$OUTPUT_DIR" \
-    --batch_size 1
