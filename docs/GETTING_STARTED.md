@@ -66,13 +66,18 @@ Obtain CheXpert from:
 
 <https://aimi.stanford.edu/datasets/chexpert-chest-x-rays>
 
-Recommended layout:
+Recommended layout with one image examples:
 
 ```text
 data/
-├── CheXpert-v1.0/
+├── CheXpert/
 └── evaluation/
-    └── chexpert_qa_long.json
+    └── json_files
+        └── chexpert_qa_long.json
+    └── valid
+        └── patient123
+            └── study1
+                └── view1_frontal.jpg
 ```
 
 Each record is expected to resemble:
