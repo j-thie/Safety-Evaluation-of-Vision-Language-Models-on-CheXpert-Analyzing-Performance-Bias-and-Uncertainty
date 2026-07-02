@@ -73,7 +73,7 @@ Record:
 
 ## Analysis commands
 
-Configure the input lists and paths exactly as described in [`ANALYSIS.md`](/ANALYSIS.md).
+Configure the input lists and paths exactly as described in [`ANALYSIS.md`](/docs/ANALYSIS.md).
 
 ### Core metrics
 
