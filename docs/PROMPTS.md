@@ -23,17 +23,6 @@ Every prompt requires the final output format:
 Final Answer: X
 ```
 
-## Variants A-F
-
-The variants alter framing and role instructions:
-
-- **A:** compact image type and decision-rule format;
-- **B:** direct classification question;
-- **C:** precise image-classifier role;
-- **D:** radiologist role with conservative interpretation;
-- **E:** image-classifier/radiology framing;
-- **F:** generic medical-image classification framing.
-
 ## Keeping code and documentation synchronized
 
 In the uploaded scripts, `PROMPT_NAME` is only used in the output filename. It does not select a prompt template.
@@ -42,22 +31,5 @@ For every run, verify that:
 
 1. the embedded text matches the intended A-F template;
 2. `PROMPT_NAME` uses the matching name;
-3. the parser accepts the labels advertised by the prompt; and
-4. the output directory identifies the condition and response format.
+3. the output directory identifies the condition and response format.
 
-The recommended refactor is a shared `prompts.py` file:
-
-```python
-PROMPTS = {
-    "binary_normal": {
-        "prompt_a": "...",
-        "prompt_b": "...",
-    },
-    "three_choice_no_image": {
-        "prompt_a": "...",
-        "prompt_b": "...",
-    },
-}
-```
-
-Do not claim this refactor is implemented until all inference scripts import and use it.
