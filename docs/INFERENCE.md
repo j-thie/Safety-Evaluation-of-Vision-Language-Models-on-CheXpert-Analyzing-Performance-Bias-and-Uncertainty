@@ -106,5 +106,4 @@ Before publication:
 - set and record a random seed;
 - save the mapping between source CheXpert records and irrelevant images;
 - retain source CheXpert patient/image identifiers;
-- document sampling with or without replacement;
-- document the irrelevant-image dataset and license.
+- document sampling with or without replacement.
