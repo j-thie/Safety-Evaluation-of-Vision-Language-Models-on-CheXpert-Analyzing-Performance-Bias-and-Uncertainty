@@ -34,19 +34,72 @@ Research code for evaluating MedGemma and Ministral on chest X-ray classificatio
 ## Repository layout
 
 ```text
-.
-├── MG_*.py                         # MedGemma inference scripts
-├── mis_*.py                        # Ministral inference scripts
-├── run_medgemma.sh                 # Original MedGemma SLURM launcher
-├── run_mistral.sh                  # Original Ministral SLURM launcher
-├── MED_environment.yaml            # Python 3.10 Conda base environment
-├── MG_requirements.txt             # Pinned MedGemma packages
-├── MIS_requirements.txt            # Pinned Ministral packages
-├── prompt_conditions.pdf           # Complete prompt specification
-├── docs/                           # Detailed setup and reproduction guides
-├── scripts/                        # Corrected launcher templates
-└── outputs/                        # Generated predictions and analyses
+
+Safety-Evaluation-of-Vision-Language-Models-on-CheXpert/
+├── README.md
+| 
+├── environments/
+│   ├── MED_environment.yaml
+│   ├── MG_requirements.txt
+│   ├── MIS_requirements.txt
+│   └── analysis_requirements.txt
+|
+├── scripts/
+│   ├── run_medgemma.sh
+│   ├── run_mistral.sh
+│   ├── medgemma/
+│   │   ├── MG_normal_2.py
+│   │   ├── MG_normal_3.py
+│   │   ├── MG_unknown_2.py
+│   │   ├── MG_unknown_3.py
+│   │   ├── MG_known_2.py
+│   │   ├── MG_known_3.py
+│   │   └── MG_irrelevant_3.py
+│   └── ministral/
+│       ├── mis_normal_2.py
+│       ├── mis_normal_3.py
+│       ├── mis_unknown_2.py
+│       ├── mis_unknown_3.py
+│       ├── mis_known_2.py
+│       ├── mis_known_3.py
+│       └── mis_irrelevant_3.py
+│
+├── analysis/
+│   ├── calculations.py
+│   ├── norm3_f1_acc.py
+│   ├── every_category_per_model.py
+│   ├── bootstrap/
+│   ├── F1_bootstrapping.py
+│   ├── per_category_per_prompt_typebootstrapping.py
+│   ├── bias.py
+│   ├── invalid_per_gender.py
+│   ├── invalid_responses/
+│   ├── count_invalids_&_2.py
+│   ├── invlaid_calculations.py
+│   ├── invlaid_calculations3.py
+│   ├── entropy_calculations_2.py
+│   ├── entropy_cal_3.py
+│   ├── SD_Comparision.py
+│   ├── SD_Comparision_3.py
+│   ├── count_zeros_for_frontal_lateral.py
+│   ├── everythingforFL.py
+│   ├── f1&accuracy_of_FL.py
+│
+├── docs/
+│   ├── GETTING_STARTED.md
+│   ├── CONFIGURATION.md
+│   ├── INFERENCE.md
+│   ├── ANALYSIS.md
+│   ├── PROMPTS.md
+│   ├── REPRODUCING_RESULTS.md
+│   └── RELEASE_CHECKS.md
+│
+├── prompts/
+│   └── prompt_conditions.pdf
+
+
 ```
+
 
 ## Getting started
 
