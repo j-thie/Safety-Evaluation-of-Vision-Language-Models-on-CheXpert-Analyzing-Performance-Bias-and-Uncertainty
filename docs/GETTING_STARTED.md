@@ -3,15 +3,11 @@
 ## 1. Clone and record the code version
 
 ```bash
-git clone https://github.com
-
+git clone https://github.com/j-thie/Safety-Evaluation-of-Vision-Language-Models-on-CheXpert-Analyzing-Performance-Bias-and-Uncertainty.git
 cd Safety-Evaluation-of-Vision-Language-Models-on-CheXpert-Analyzing-Performance-Bias-and-Uncertainty
 
 git rev-parse HEAD
 ```
-
-
-Save the commit hash with the experiment outputs.
 
 ## 2. Create the environments
 
@@ -33,8 +29,7 @@ python -m pip install --upgrade pip
 python -m pip install -r MIS_requirements.txt
 ```
 
-Important versions found in the supplied files:
-
+Important versions found in the [`supplied files`](/environments),
 | Component | MedGemma | Ministral |
 |---|---:|---:|
 | Python | 3.10 | 3.10 |
