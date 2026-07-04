@@ -108,7 +108,7 @@ All commands below are run from the repository root.
 ### 1. Clone the repository
 
 ```bash
-git clone (https://github.com/j-thie/Safety-Evaluation-of-Vision-Language-Models-on-CheXpert-Analyzing-Performance-Bias-and-Uncertainty.git)
+git clone https://github.com/j-thie/Safety-Evaluation-of-Vision-Language-Models-on-CheXpert-Analyzing-Performance-Bias-and-Uncertainty.git
 cd Safety-Evaluation-of-Vision-Language-Models-on-CheXpert-Analyzing-Performance-Bias-and-Uncertainty
 ```
 
@@ -124,7 +124,7 @@ python -m pip install -r MG_requirements.txt
 ### 3. Create the Ministral environment
 
 ```bash
-conda create -n ministral_paper -c conda-forge python=3.10 libstdcxx-ng pip
+conda env create -f MIS_environment.yaml
 conda activate ministral
 python -m pip install --upgrade pip
 python -m pip install -r MIS_requirements.txt
