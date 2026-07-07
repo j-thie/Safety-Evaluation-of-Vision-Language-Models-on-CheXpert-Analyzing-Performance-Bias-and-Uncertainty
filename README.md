@@ -225,4 +225,4 @@ Both supplied SLURM launchers request:
 
 ## Citation and license
 
-The authors acknowledge support by the state of Baden-Württemberg through bwHPC.
+*Acknowledgments. This publication was partially funded by the German Federal Ministry of Research, Technology and Space (BMFTR) as part of the Network of University Medicine 3.0 “NUM 3.0" (Grant No. 01KX2524, Project: RACOON) and by the German Research Foundation DFG (Grant No.: GRK 3012 – 520750254, Project: KEMAI). The authors acknowledge support by the state of Baden-Württemberg through bwHPC.*
