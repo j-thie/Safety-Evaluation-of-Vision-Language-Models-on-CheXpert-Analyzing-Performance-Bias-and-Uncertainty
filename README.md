@@ -8,17 +8,6 @@
 
 Research code for evaluating MedGemma and Ministral on chest X-ray classification under controlled image-availability and prompting conditions.
 
-> **Research use only:** This repository is intended for model-evaluation and reproducibility research. It is not a medical device or clinical decision-support system.
-
-## What this repository evaluates
-
-- Disease and projection classification
-- Original-image, no-image, and irrelevant-image conditions
-- Binary (`0`/`1`) and three-choice (`0`/`1`/`2`) responses
-- Prompt sensitivity across variants A-F
-- Invalid-response behavior
-- Prediction consistency and entropy-based uncertainty
-- Demographic subgroup performance differences
 
 ## Documentation
 
